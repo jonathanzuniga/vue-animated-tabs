@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
 
-		<title>Vue Tabs</title>
+        <title>Vue Tabs</title>
 
-		<link rel="stylesheet" type="text/css" href="../../css/css-starter-kit/dist/csssk.min.css">
-	</head>
+        <link rel="stylesheet" type="text/css" href="base.min.css">
+        <link rel="stylesheet" type="text/css" href="tabs.min.css">
 
-	<body>
-		<div id="root">
-			<tabs>
-	            <tab name="Tab 1" :selected="true">
-	                <p>Lorem ipsum.</p>
-	            </tab>
+        <style type="text/css">
+            .c-black-90 {
+                color: rgba(0, 0, 0, 0.9) !important;
+            }
+        </style>
+    </head>
 
-	            <tab name="Tab 20">
-	                <p>Lorem ipsum dolor sit amet.</p>
-	            </tab>
+    <body>
+        <div id="root">
+            <tabs>
+                <tab name="Tab 1" :selected="true">
+                    <p>Lorem ipsum.</p>
+                </tab>
 
-	            <tab name="Tab 3000000">
-	                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-	            </tab>
-       		</tabs>
-		</div>
+                <tab name="Tab 20">
+                    <p>Lorem ipsum dolor sit amet.</p>
+                </tab>
 
-		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-		<script src="tabs.js"></script>
-	</body>
+                <tab name="Tab 3000000">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </tab>
+            </tabs>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="tabs.js"></script>
+    </body>
 </html>
