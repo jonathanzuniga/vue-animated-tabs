@@ -1,87 +1,131 @@
 Vue.component( 'tabs', {
 
-	template: `
-		<div>
-			<div class="tabs">
-				<ul>
-					<li v-for="tab in tabs" :class="{ 'active': tab.isActive }">
-						<a :href="tab.href" @click="selectTab(tab)">{{ tab.name }}</a>
-					</li>
-				</ul>
-			</div>
+    template: `
+        <div>
+            <div class="tabs" ref="tabs">
+                <ul>
+                    <li v-for="tab in tabs">
+                        <a :class="{ 'c-black-90': tab.isActive }" :href="tab.href" @click="selectTab(tab)">{{ tab.name }}</a>
+                    </li>
+                    <li :style="activeUnderlineStyle" class="active-underline"></li>
+                </ul>
+            </div>
 
-			<div class="tabs-details">
-				<slot></slot>
-			</div>
-		</div>
-	`,
+            <div class="tabs-details">
+                <slot></slot>
+            </div>
+        </div>
+    `,
 
-	data() {
+    data() {
 
-		return { tabs: [] };
+        return {
+            tabs: [],
+            sizes: {},
+            activeUnderlineStyle: {
+                transform: 'translateX(0)',
+                width: '${ sizes[ 0 ].tabWidth }px'
+            }
+        };
 
-	},
+    },
 
-	created() {
+    created() {
 
-		this.tabs = this.$children;
+        this.tabs = this.$children;
 
-	},
+    },
 
-	methods: {
+    methods: {
 
-		selectTab( selectedTab ) {
+        selectTab( selectedTab ) {
 
-			this.tabs.forEach( tab => {
+            let size = 0;
 
-				tab.isActive = ( tab.name == selectedTab.name );
+            this.tabs.forEach( ( tab, index ) => {
 
-			} );
+                tab.isActive = ( tab.name == selectedTab.name );
 
-		}
+                if ( tab.isActive ) {
 
-	}
+                    size = this.sizes[ index ];
+
+                }
+
+
+            } );
+
+            this.activeUnderlineStyle = {
+                transform: `translateX(${ size.tabLeft }px)`,
+                width: `${ size.tabWidth }px`
+            };
+
+        }
+
+    },
+
+    mounted() {
+
+        this.$nextTick( () => {
+
+            const tabs = this.$refs.tabs;
+            const tabsWidth = tabs.clientWidth;
+            const tab = tabs.getElementsByTagName( 'li' );
+            const sizes = {};
+
+            for ( let i = 0; i < tab.length; i ++ ) {
+                
+                let tabLeft = tab[ i ].offsetLeft;
+                let tabWidth = tab[ i ].clientWidth;
+
+                this.sizes[ i ] = { tabLeft, tabWidth };
+            
+            }
+
+        } );
+
+    }
 
 } );
 
 Vue.component( 'tab', {
 
-	template: `
-		<div v-show="isActive"><slot></slot></div>
-	`,
+    template: `
+        <div :class="{ 'active': isActive }"><slot></slot></div>
+    `,
 
-	props: {
-		name: { required: true },
-		selected: { default: false }
-	},
+    props: {
+        name: { required: true },
+        selected: { default: false }
+    },
 
-	data() {
+    data() {
 
-		return {
-			isActive: false
-		};
+        return {
+            isActive: false
+        };
 
-	},
+    },
 
-	computed: {
+    computed: {
 
-		href() {
+        href() {
 
-			return '#' + this.name.toLowerCase().replace( / /g, '-' );
+            return '#' + this.name.toLowerCase().replace( / /g, '-' );
 
-		}
-	},
+        }
+    },
 
-	mounted() {
+    mounted() {
 
-		this.isActive = this.selected;
+        this.isActive = this.selected;
 
-	}
+    }
 
 } );
 
 new Vue( {
 
-	el: '#root'
+    el: '#root'
 
 } );
